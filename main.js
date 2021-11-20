@@ -21,6 +21,25 @@
 })();
 
 (function() {
+    self.Ball = function(x, y, radius, board) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.speed_y = 0;
+        this.speed_x = 3;
+        this.board = board;
+        this.direction = 1;
+        this.bounce_angle = 0;
+        this.max_bounce_angle = Math.PI / 12;
+        this.speed = 3;
+
+        board.ball = this;
+        this.kind = "circle";
+
+    }
+})();
+
+(function() {
     self.Bar = function(x, y, width, height, board) {
         this.x = x;
         this.y = y;
@@ -75,6 +94,12 @@
             case "rectangle":
                 ctx.fillRect(element.x, element.y, element.width, element.height)
                 break;
+            case "circle":
+                ctx.beginPath();
+                ctx.arc(element.x, element.y, element.radius, 0, 7);
+                ctx.fill();
+                ctx.closePath();
+                break;
         }
     }
 })();
@@ -110,7 +135,7 @@ document.addEventListener("keydown", function(ev) {
 
 window.requestAnimationFrame(controller);
 
-window.addEventListener("load", main);
+window.addEventListener("load", controller);
 
 function controller() {
     board_view.play();
