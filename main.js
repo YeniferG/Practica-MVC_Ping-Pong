@@ -54,12 +54,19 @@
     }
 
     self.BoardView.prototype = {
+        clean: function() {
+            this.ctx.clearRect(0, 0, this.board.width, this.board.height);
+        },
         draw: function() {
             for (var i = this.board.elements.length - 1; i >= 0; i--) {
                 var el = this.board.elements[i];
 
                 draw(this.ctx, el);
             }
+        },
+        play: function() {
+            this.clean();
+            this.draw();
         }
     }
 
@@ -106,7 +113,7 @@ window.requestAnimationFrame(controller);
 window.addEventListener("load", main);
 
 function controller() {
-    board_view.draw();
+    board_view.play();
 
     window.requestAnimationFrame(controller);
 }
