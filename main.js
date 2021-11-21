@@ -1,3 +1,33 @@
+// Esta funcion es la configuracion del juego
+var player1 = document.getElementById("pj1");
+var player2 = document.getElementById("pj2");
+// Puntaje -tratamiento de puntaje y ganador
+var score1 = player1.innerHTML = 0;
+var score2 = player2.innerHTML = 0;
+const limite = 5;
+
+function score(player) {
+    if (player == 1) {
+        score1++;
+        player1.innerHTML = score1;
+    } else {
+        score2++;
+        player2.innerHTML = score2;
+    }
+}
+
+function winner(player) {
+    if (player == 1) {
+        alert("Ganó el jugador 1");
+        score1 = 0;
+        location.reload();
+    } else {
+        alert("Ganó el jugador 2");
+        score2 = 0;
+        location.reload();
+    }
+}
+
 (function() {
     self.Board = function(width, height) {
         this.width = width;
@@ -41,6 +71,33 @@
         move: function() {
             this.x += (this.speed_x * this.direction);
             this.y += (this.speed_y);
+
+            // score- tratamiento puntage 
+            if (score1 == limite) { winner(1); } else if (score2 == limite) { winner(2); }
+
+            if (this.x <= 10) {
+                score(2);
+                this.x = 400;
+                this.y = 200;
+                this.speed_x = -this.speed_x;
+                this.bounce_angle = -this.bounce_angle;
+            }
+            if (this.x >= 790) {
+                score(1);
+                this.x = 400;
+                this.y = 200;
+                this.speed_x = -this.speed_x;
+                this.bounce_angle = -this.bounce_angle;
+            }
+
+            if (this.y <= 10) {
+                this.speed_y = -this.speed_y;
+                this.bounce_angle = -this.bounce_angle;
+            }
+            if (this.y >= 390) {
+                this.speed_y = -this.speed_y;
+                this.bounce_angle = -this.bounce_angle;
+            }
         },
         get width() {
             return this.radius * 2;
@@ -178,18 +235,27 @@ document.addEventListener("keydown", function(ev) {
 
     if (ev.keyCode == 38) {
         ev.preventDefault();
-        bar.up();
+        if (bar_2.y >= 10) {
+            bar_2.up(); // Se mueve la barra hacia arriba
+        }
     } else if (ev.keyCode == 40) {
         ev.preventDefault();
-        bar.down();
+        if (bar_2.y <= 290) {
+            bar_2.down(); // Se mueve la barra hacia abajo
+        }
     } else if (ev.keyCode == 87) {
-        ev.preventDefault();
         //W
-        bar_2.up();
-    } else if (ev.keyCode == 83) {
         ev.preventDefault();
+        if (bar.y >= 10) {
+            bar.up(); // Se mueve la segunda barra hacia arriba
+        }
+
+    } else if (ev.keyCode == 83) {
         //S
-        bar_2.down();
+        ev.preventDefault();
+        if (bar.y <= 290) {
+            bar.down(); // Se mueve la segunda barra hacia abajo
+        }
     } else if (ev.keyCode == 32) {
         ev.preventDefault();
         board.playing = !board.playing;
@@ -199,8 +265,6 @@ document.addEventListener("keydown", function(ev) {
 board_view.draw();
 
 window.requestAnimationFrame(controller);
-
-window.addEventListener("load", controller);
 
 function controller() {
     board_view.play();
