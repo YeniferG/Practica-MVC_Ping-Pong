@@ -90,9 +90,11 @@
             }
         },
         play: function() {
-            this.clean();
-            this.draw();
-            this.board.ball.move();
+            if (!this.board.playing) {
+                this.clean();
+                this.draw();
+                this.board.ball.move();
+            }
         }
     }
 
@@ -139,6 +141,8 @@ document.addEventListener("keydown", function(ev) {
         board.playing = !board.playing;
     }
 })
+
+board_view.draw();
 
 window.requestAnimationFrame(controller);
 
