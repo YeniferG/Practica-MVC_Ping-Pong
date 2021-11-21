@@ -2,10 +2,10 @@
 var player1 = document.getElementById("pj1");
 var player2 = document.getElementById("pj2");
 
-// Puntaje -tratamiento de puntaje y ganador
+// Tratamiento de puntaje y ganador
 var score1 = player1.innerHTML = 0;
 var score2 = player2.innerHTML = 0;
-const limite = 5;
+const limite = 8;
 
 function score(player) {
     if (player == 1) {
@@ -41,6 +41,7 @@ function winner(player) {
         this.playing = true;
     }
 
+    //Metodo que devuelve las barras y la pelota del juego
     self.Board.prototype = {
         get elements() {
             var elements = this.bars.map(function(bar) {
@@ -52,6 +53,7 @@ function winner(player) {
     }
 })();
 
+//Funcion encargada de la creacion y puesta en movimiento de la pelota del juego
 (function() {
     self.Ball = function(x, y, radius, board) {
         this.x = x;
@@ -70,13 +72,15 @@ function winner(player) {
 
     }
     self.Ball.prototype = {
+        //Logica para poner en movimiento la pelota
         move: function() {
             this.x += (this.speed_x * this.direction);
             this.y += (this.speed_y);
 
-            // score- tratamiento puntage 
+            // Tratamiento del puntaje de los jugadores
             if (score1 == limite) { winner(1); } else if (score2 == limite) { winner(2); }
 
+            //Colision con paredes verticales del tablero
             if (this.x <= 10) {
                 score(2);
                 this.x = 400;
@@ -92,6 +96,7 @@ function winner(player) {
                 this.bounce_angle = -this.bounce_angle;
             }
 
+            //Colision con paredes horizontales del tablero
             if (this.y <= 10) {
                 this.speed_y = -this.speed_y;
                 this.bounce_angle = -this.bounce_angle;
@@ -124,6 +129,7 @@ function winner(player) {
     }
 })();
 
+//Funcion que permite realizar la creacion de las barras y su logica de desplazamiento
 (function() {
     self.Bar = function(x, y, width, height, board) {
         this.x = x;
@@ -136,9 +142,11 @@ function winner(player) {
         this.speed = 10;
     }
     self.Bar.prototype = {
+        //Desplazamiento de la barra hacia abajo
         down: function() {
             this.y += this.speed;
         },
+        //Desplazamiento de la barra hacia arriba
         up: function() {
             this.y -= this.speed;
         },
@@ -159,9 +167,11 @@ function winner(player) {
     }
 
     self.BoardView.prototype = {
+        //Realiza la limpieza de la pantalla
         clean: function() {
             this.ctx.clearRect(0, 0, this.board.width, this.board.height);
         },
+        //Dibuja los elementos alojados en el Array Elements
         draw: function() {
             for (var i = this.board.elements.length - 1; i >= 0; i--) {
                 var el = this.board.elements[i];
@@ -170,6 +180,7 @@ function winner(player) {
             }
         },
         check_collisions: function() {
+            //Chequea en que parte del tablero se esta generando la colision
             for (var i = this.board.bars.length - 1; i >= 0; i--) {
                 var bar = this.board.bars[i];
                 if (hit(bar, this.board.ball)) {
@@ -178,6 +189,7 @@ function winner(player) {
             }
         },
         play: function() {
+            //Recibe todas las funciones necesarias para ejecutar el juego
             if (!this.board.playing) {
                 this.clean();
                 this.draw();
@@ -212,6 +224,7 @@ function winner(player) {
         return hit;
     }
 
+    //Funcion que dibuja la pelota y las barras
     function draw(ctx, element) {
         switch (element.kind) {
             case "rectangle":
@@ -235,17 +248,18 @@ var canvas = document.getElementById("canvas");
 var board_view = new BoardView(canvas, board);
 var ball = new Ball(400, 200, 10, board);
 
+//Añade el EventListener de qué tecla se presiona para generar el movimiento con up() y down()
 document.addEventListener("keydown", function(ev) {
 
     if (ev.keyCode == 38) {
         ev.preventDefault();
         if (bar_2.y >= 10) {
-            bar_2.up(); // Se mueve la barra hacia arriba
+            bar_2.up(); // Se mueve la barra 1 hacia arriba
         }
     } else if (ev.keyCode == 40) {
         ev.preventDefault();
         if (bar_2.y <= 290) {
-            bar_2.down(); // Se mueve la barra hacia abajo
+            bar_2.down(); // Se mueve la barra 1 hacia abajo
         }
     } else if (ev.keyCode == 87) {
         //W
@@ -271,7 +285,7 @@ board_view.draw();
 window.requestAnimationFrame(controller);
 
 
-//Funcion que instancia los objetos
+//Funcion que llama la funcion play para ejecutar el juego
 function controller() {
     board_view.play();
     window.requestAnimationFrame(controller);
