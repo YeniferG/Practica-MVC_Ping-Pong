@@ -1,0 +1,45 @@
+body {
+    text-align: center;
+    background-color: azure;
+    background-size: cover;
+}
+
+#header {
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+    color: rgb(243, 125, 125);
+}
+
+hr {
+    border: solid;
+}
+
+#score {
+    color: rgb(221, 128, 74);
+}
+
+p {
+    text-align: justify;
+    font-size: 24px;
+    max-width: 50%;
+}
+
+p img {
+    max-height: 30px;
+}
+
+#pj1,
+#pj2 {
+    color: rgb(85, 223, 216);
+    font-size: 25px;
+    font-weight: 1000;
+    font-family: monospace;
+}
+
+#canvas {
+    background-color: rgb(9, 105, 30);
+    border: 10px;
+    border-style: solid;
+    color: solid;
+}

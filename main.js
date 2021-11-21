@@ -1,6 +1,7 @@
 // Esta funcion es la configuracion del juego
 var player1 = document.getElementById("pj1");
 var player2 = document.getElementById("pj2");
+
 // Puntaje -tratamiento de puntaje y ganador
 var score1 = player1.innerHTML = 0;
 var score2 = player2.innerHTML = 0;
@@ -28,6 +29,7 @@ function winner(player) {
     }
 }
 
+//Funcion que representa el modelo y la configuracion del juego
 (function() {
     self.Board = function(width, height) {
         this.width = width;
@@ -65,8 +67,8 @@ function winner(player) {
 
         board.ball = this;
         this.kind = "circle";
-    }
 
+    }
     self.Ball.prototype = {
         move: function() {
             this.x += (this.speed_x * this.direction);
@@ -146,6 +148,7 @@ function winner(player) {
     }
 })();
 
+//Fumncion anonima que representa la vista
 (function() {
     self.BoardView = function(canvas, board) {
         this.canvas = canvas;
@@ -224,6 +227,7 @@ function winner(player) {
     }
 })();
 
+
 var board = new Board(800, 400);
 var bar = new Bar(0, 150, 20, 100, board);
 var bar_2 = new Bar(780, 150, 20, 100, board);
@@ -266,8 +270,9 @@ board_view.draw();
 
 window.requestAnimationFrame(controller);
 
+
+//Funcion que instancia los objetos
 function controller() {
     board_view.play();
-
     window.requestAnimationFrame(controller);
 }
